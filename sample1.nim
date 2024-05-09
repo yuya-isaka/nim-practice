@@ -58,3 +58,21 @@ proc asSoundable(self: Toy): Soundable =
 
 @[new ToyDuck, new ToyDog].map(asSoundable).soundAll()
 
+type
+  SoundableVariantKind = enum skAnimal, skToy
+  SoundableVariant = object
+    case kind: SoundableVariantKind
+    of skAnimal:
+      animal: Animal
+    of skToy:
+      toy: Toy
+
+proc asSoundableVariant(self: Animal): SoundableVariant =
+  SoundableVariant(kind: skAnimal, animal: self)
+
+proc asSoundableVariant(self: Toy): SoundableVariant =
+  SoundableVariant(kind: skToy, toy: self)
+
+let animals = @[new Duck, new Dog]
+let toys = @[new ToyDuck, new ToyDog]
+let all = animals.map(asSoundableVariant) & toys.map(asSoundableVariant)
