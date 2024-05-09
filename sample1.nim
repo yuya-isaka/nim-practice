@@ -43,3 +43,18 @@ echo s.sound
 import std/sequtils
 
 @[new Duck, new Dog].map(asSoundable).soundAll
+
+type Toy = ref object of RootObj
+method sound(self: Toy): string {.base.} = ""
+
+type ToyDuck = ref object of Toy
+method sound(self: ToyDuck): string = "< quack!"
+
+type ToyDog = ref object of Toy
+method sound(self: ToyDog): string = "< bow!"
+
+proc asSoundable(self: Toy): Soundable =
+  Soundable(soundProc : () => self.sound)
+
+@[new ToyDuck, new ToyDog].map(asSoundable).soundAll()
+
